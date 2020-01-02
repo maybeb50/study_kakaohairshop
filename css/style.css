@@ -1,0 +1,112 @@
+
+.ir_pm {display:block; font-size:0; line-height:0; text-indent:-9999px; }
+.screen_out {overflow:hidden; position:absolute; width:0; height:0; line-height:0; text-indent:-9999px;}
+
+#kakaoPromotion {overflow:hidden; position:relative; height:100%;}
+#kakaoHead {z-index:1000; position:fixed; top:0; left:0; width:100%;}
+#kakaoContent {height:100%; min-height:600px;}
+
+#kakaoHead .tit_hairshop {display:inline-block; margin:30px 0 0 52px;}
+#kakaoHead .link_logo {display:block; overflow:hidden; width:200px; height:37px; text-indent:-9999px; font-size:0; line-height:0; background:url('../images/promotion/img_logo.png') no-repeat;}
+#kakaoHead .btn_share {position:absolute; top:26px; right:50px; width:48px; height:48px;}
+#kakaoHead .btn_share .ico_hairshop {display:block; width:48px; height:48px; text-indent:-9999px; background:url('../images/promotion/ico_hairshop_160617.png') no-repeat -55px -150px;}
+
+/* paging */
+.intro_etc {z-index:100; position:fixed; top:50%; right:62px; width:28px; margin-top:-90px;}
+.paging_intro .link_page {overflow:hidden; display:block; width:13px; height:13px; margin:8px auto 0; border:3px solid rgba(0, 0, 0, 0.3); border-radius:9px; font-size:0; line-height:0; text-indent:-9999px; color:#333;}
+.paging_intro .on {border:3px solid #444; background-color:#444;}
+
+
+
+
+/* content */
+
+/* common content */
+.intro_kakaohairshop {overflow:hidden; position:absolute; left:0; width:100%; height:100%;}
+
+.promotion_scene1 .intro_type1,
+.intro_type1 {top:0; background-color:#f7f4ee;}
+.promotion_scene2 .intro_type2,
+.intro_type2 {top:100%; background-color:#ffe32a;}
+.promotion_scene3 .intro_type3, 
+.intro_type3 {background-color:#fff;}
+
+.txt_hairshop {display:block; overflow:hidden; font-size:0; line-height:0; text-indent:-9999px; background:url('../images/promotion/txt_hairshop_190701.png') no-repeat;}
+.txt_balloon {display:block; overflow:hidden; font-size:0; line-height:0; text-indent:-9999px; background:url('../images/promotion/txt_balloon.png') no-repeat;}
+
+.intro_type1 {position:relative;}
+.intro_type1 .inner_kakaohairshop {position:absolute; top:50%; left:50%; width:578px; height:700px; margin:-350px 0 0 -289px;}
+.head_hairshop {width:100%; height:154px; background:url('../images/promotion/head_hairshop.jpg') no-repeat;}
+.video_hairshop {position:relative; width:100%; height:409px; background:url('../images/promotion/body_hairshop.jpg') no-repeat;}
+.list_video {overflow:hidden; position:absolute; top:330px; left:6px; width:567px; height:75px; background-color:#000;}
+.list_video li {float:left; height:100%;}
+.list_video .item_video1 {width:32.8%; margin-right:4px;}
+.list_video .item_video2 {width:33.4%; margin-right:4px;}
+.list_video .item_video3 {overflow:hidden; float:none; width:auto;}
+.list_video .link_video {display:block;}
+.img_thumb {display:block; width:100%; vertical-align:top;}
+.list_video .img_choose, 
+.list_video .on .img_yet {display:none;}
+.list_video .on .img_choose {display:block;}
+.wrap_video {width:567px; height:319px; margin:0 auto; padding-top:4px;}
+.wrap_video .video_player {width:100%; height:100%;}
+
+.intro_type2 .txt_hairshop {z-index:100; position:absolute; top:50%; left:50%; width:330px; height:224px; margin:-139px 0 0 -419px; background-position:0 -1040px;}
+.intro_type2 .frame_phone {position:absolute; top:50%; left:50%; width:288px; height:596px; margin:-290px 0 0 136px; background:url('../images/promotion/frame_iphone2_160816.png') no-repeat;}
+.intro_type2 .inner_phone {overflow:hidden; position:absolute; top:55px; left:10px; text-indent:-9999px; width:254px; height:470px;}
+.intro_type2 .inner_phone .phone_slide {overflow:hidden; width:200%; height:100%;}
+.intro_type2 .inner_phone .talk_more {z-index:10; float:left; width:0; height:460px; background:url('../images/promotion/img_kt_more.png') no-repeat;}
+.intro_type2 .inner_phone .talk_phone {overflow:hidden; float:left; position:relative; width:254px; height:470px; text-indent:-9999px; background:url('../images/promotion/frame_iphone3_160617.png') no-repeat;}
+.intro_type2 .txt_balloon {position:absolute; top:50%; left:50%; width:254px; height:42px; margin:-158px 0 0 -127px;}
+.intro_type2 .deco_talk1 {margin:-158px 0 0 -127px; background-position:0 -345px;}
+.intro_type2 .deco_talk2 {margin:-111px 0 0 -127px; background-position:0 -395px;}
+.intro_type2 .deco_talk3 {margin:-48px 0 0 -127px; background-position:0 -445px;}
+.intro_type2 .deco_talk4 {margin:0 0 0 -127px; background-position:0 -495px;}
+.intro_type2 .deco_talk5 {margin:48px 0 0 -127px; background-position:0 -545px;}
+.intro_type2 .talk_touch {position:absolute; width:44px; height:44px; border-radius:50px; opacity:.2; background-color:#000; }
+/* .intro_type2 .talk_direct {z-index:100; overflow:hidden; position:absolute; top:186px; right:-24px; width:175px; height:175px; text-indent:-9999px; background:url('../images/promotion/img_zoom.png') no-repeat;} */
+.intro_type2 .talk_direct {overflow:hidden;position:absolute;top:186px;right:-24px;width:175px;height:175px;background:url('../images/promotion/img_zoom.png');text-indent:-9999px;}
+
+/* promotion_scene2 active */
+.promotion_scene2 .intro_type2 .deco_talk3, 
+.promotion_scene2 .intro_type2 .deco_talk4, 
+.promotion_scene2 .intro_type2 .deco_talk5 {opacity:0; animation:balloon2 .4s forwards; -webkit-animation:balloon2 .4s forwards;}
+.promotion_scene2 .intro_type2 .deco_talk3 {animation-delay:1.5s; -webkit-animation-delay:1.5s;}
+.promotion_scene2 .intro_type2 .deco_talk4 {animation-delay:2.5s; -webkit-animation-delay:2.5s;}
+.promotion_scene2 .intro_type2 .deco_talk5 {animation-delay:3s; -webkit-animation-delay:3s;}
+.promotion_scene2 .intro_type2 .talk_more {animation:talk_more .5s forwards; animation-delay:5s; -webkit-animation:talk_more 0.5s forwards; -webkit-animation-delay:5s;}
+.promotion_scene2 .intro_type2 .talk_touch {opacity:0; animation-delay:3s; animation:talk_touch 2s forwards; animation-play-state:running; -webkit-animation:talk_touch 2s forwards; -webkit-animation-delay:3s; -webkit-animation-play-state:running;}
+.promotion_scene2 .intro_type2 .talk_direct {opacity:0; animation:talk_direct 0.7s forwards; -webkit-animation:talk_direct .7s forwards; animation-delay:5.5s; -webkit-animation-delay:5.5s; }
+
+@keyframes balloon2 {
+    0% {opacity:.1;top:51%}
+    20% {opacity:.3}
+    40% {opacity:.5}
+    60% {opacity:.8}
+    100% {opacity:1;top:50%}
+}
+
+@keyframes talk_touch {
+    0% {top:110px; left:55px; opacity:.2;}
+    25% {top:110px; left:55px; transform:scale(1)}
+    55% {top:55px; left:0; transform:scale(1); opacity:.2;}
+    60% {top:55px; left:0; transform:scale(1.2); opacity:.2;}
+    70% {top:55px; left:0; transform:scale(1); opacity:.2;}
+    80% {top:55px; left:0; transform:scale(1.2); opacity:.2;}
+    90% {top:55px; left:0; transform:scale(1); opacity:.2;}
+    100% {top:55px; left:0; transform:scale(0); opacity:.2;}
+}
+
+@keyframes talk_more {
+    0% {width:0;}
+    50% {width:50%;}
+    100% {width:50%;}
+}
+
+@keyframes talk_direct {
+    0% {opacity:0.2; transform:scale(.4);}
+    50% {opacity:1; transform:scale(1);}
+    100% {opacity:1; transform:scale(1);}
+}
+
+.intro_type3 .txt_hairshop {position:absolute; top:50%; left:50%; width:450px; height:580px; }

@@ -1,0 +1,1200 @@
+
+
+
+
+
+
+
+
+    
+
+        <!DOCTYPE html>
+        <html lang="ko">
+        <head>
+            <title>KakaoHairshop</title>
+            <meta charset="UTF-8">
+            <meta name="naver-site-verification" content="95af75e079918f4b5112f62af52484abd5a7c4f4"/>
+            <meta name="description" content="내주변 헤어샵 / 네일샵 찾기부터 실시간 가장 인기있는 스타일 확인까지, 이제 뷰티는 카카오헤어샵에서 해결하세요!" />
+            <meta name="keywords" content="여자헤어스타일, 남자헤어스타일, 헤어스타일추천, 커트, 펌, 염색, 스타일링, 메이크업, 네일아트, 강남헤어샵, 청담헤어샵, 홍대헤어샵, 준오헤어, 박승철헤어, 커커, 리안헤어" />
+            <meta content="website" property="og:type">
+            <meta content="http://www.kakao.com/kakaohairshop" property="og:url">
+            <meta content="카카오헤어샵" property="og:title">  <!-- 2016-06-28 수정 -->
+            <meta content="카카오가 찾아준 헤어샵, 카카오헤어샵" property="og:description">  <!-- 2016-06-28 수정 -->
+            <meta content="http://w.kakaocdn.net/assets/common/og/meta_kakaohairshop4-f57d4388b019611a76b58f1ad4131766.png" property="og:image">
+            <script src="https://s1.daumcdn.net/svc/original/U03/cssjs/jquery/jquery-1.11.1.min.js"></script>
+            <script type="text/javascript" src="https://t1.kakaocdn.net/kakaocorp/Kakao/kakaocom/assets/javascripts/jquery-ui.min.js"></script>
+            <script type="text/javascript" src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+            <script type="text/javascript" src="https://t1.kakaocdn.net/kakaocorp/Kakao/kakaocom/assets/javascripts/application.js"></script>
+            <script type="application/ld+json">
+                {
+                    "@context": "http://schema.org",
+                    "@type": "Organization",
+                    "name": "카카오헤어샵",
+                    "url": "http://kakao.com/kakaohairshop",
+                    "sameAs": [
+                        "https://apps.apple.com/kr/app/kakaoheeosyab-kakaohairshop/id1173776109",
+                        "https://play.google.com/store/apps/details?id=com.kakao.beauty.hairshop",
+                        "https://www.instagram.com/kakaohairshop_official/",
+                        "https://www.youtube.com/channel/UCvh_a3NaM4Y1FruePqHk-6Q"
+                    ]
+                }
+            </script>
+            <script>
+
+                var _nowScene = 1;
+                var _actionFlag = false;
+                var _slideTime = 500;
+                var _moveTime = 500;
+                var _maxScene = 6;
+                var _actionType = "easeInOutCubic"; //회면이동 옵션
+                var setIntervalEvent;
+                var clearIntervalEvent;
+
+                $(document).ready(function () {
+                    hair_change();
+                    clearIntervalEvent = function () {
+                        clearTimeout(setIntervalEvent);
+                        $('#scene1').removeClass('main_hair1 main_hair2 main_hair3 main_hair4 main_hair5 main_hair6').addClass('main_hair1');
+                    };
+
+                    $('button.num_page').on('click', function () {
+                        clearTimeout(setIntervalEvent);
+                        /*$('#scene2').removeClass('on1 on2 on3').addClass('on' + ($('button.num_page').index(this) + 1).toString());*/
+                        deco_hair_change(($('button.num_page').index(this)));
+                    });
+
+                    $('button.btn_share').on('click', function () {
+                        $('.sns_layer').toggle($(this).addClass('open_layer'))
+                    });
+
+                    $(".link_video").on('click', function () {
+                        var $this = $(this);
+                        var tmpUrl = $this.attr('href');
+                        if($this.parent('li').hasClass('item_video1')){
+                            $('.item_video1 > a').addClass('on')
+                            $('.item_video2 > a').removeClass('on');
+                            $('.item_video3 > a').removeClass('on');
+
+                        }
+                        else if($this.parent('li').hasClass('item_video2') ){
+                            $('.item_video2 > a').addClass('on')
+                            $('.item_video1 > a').removeClass('on');
+                            $('.item_video3 > a').removeClass('on');
+
+                        }
+                        else if($this.parent('li').hasClass('item_video3') ){
+                            $('.item_video3 > a').addClass('on')
+                            $('.item_video1 > a').removeClass('on');
+                            $('.item_video2 > a').removeClass('on');
+                        }
+                        /* $this.addClass('on');
+                         $this.parent('li > a').attr('on');*/
+                        $('.video_player').attr('src', tmpUrl);
+                        return false;
+                    });
+
+                    //공유하기 부분
+                    var tw_content = "카톡에서 바로예약 카카오헤어샵\n카톡 더보기 속 \<헤어샵 예약\>에서 스타일 찾기, 헤어샵 예약 및 결제까지 한번에!\n";
+                    var story_content = "카톡에서 바로예약 카카오헤어샵\n카톡 더보기 속 \<헤어샵 예약\>에서 스타일 찾기, 헤어샵 예약 및 결제까지 한번에!\nhttp://www.kakao.com/kakaohairshop";
+                    var band_content = "카톡에서 바로예약 카카오헤어샵\n카톡 더보기 속 \<헤어샵 예약\>에서 스타일 찾기, 헤어샵 예약 및 결제까지 한번에!\nhttp://www.kakao.com/kakaohairshop";
+                    var content_url = 'http://www.kakao.com/kakaohairshop';
+
+                    $('.ico_sns_face').on('click', function (event) {
+                        event.preventDefault();
+                        window.open("http://facebook.com/sharer.php?u=" + encodeURIComponent(content_url), "FB", "left=0,top=0,toolbar=no,status=no,scrollbars=no,resizeable=no,menubar=no,location=no,width=500,height=500");
+                    });
+                    $('.ico_sns_band').on('click', function (event) {
+                        event.preventDefault();
+                        window.open("http://www.band.us/plugin/share?body=" + encodeURIComponent(band_content) + "&route=" + encodeURIComponent("http://kakao.com/kakaohairshop"), "share_band", "width=410, height=540, resizable=no");
+                    });
+                    $('.ico_sns_mp').on('click', function (event) {
+                        event.preventDefault();
+
+                        Kakao.init('ed08d80c402f3012341c0ad50b39018b');
+                        Kakao.Story.share({
+                            url: content_url,
+                            text: story_content
+                        });
+                    });
+                    $('.ico_sns_twi').on('click', function (event) {
+                        event.preventDefault();
+                        window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(tw_content) + "&url=" + encodeURIComponent(content_url), "TW", "left=0,top=0,toolbar=no,status=no,scrollbars=no,resizeable=no,menubar=no,location=no,width=500,height=500");
+                    });
+
+                    if (window.addEventListener)
+                        /** DOMMouseScroll is for mozilla. */
+                        window.addEventListener('DOMMouseScroll', wheel, false);
+
+                    /** IE/Opera. */
+                    window.onmousewheel = document.onmousewheel = wheel;
+
+                });
+
+                function clearSceneClass() {
+                    for (var i = 0; i < _maxScene + 2; i++) {
+                        $('#kakaoPromotion').removeClass("promotion_scene" + i);
+                    }
+                }
+
+
+                function setScene(num) {
+                    if (true == _actionFlag) return;   // 화면 이동중 동작하지 않는다
+                    if (num < 1) return;
+                    if (num > 6) return;
+                    if (num == _nowScene) return;
+
+                    _actionFlag = true;
+
+                    delay = 10;
+
+                    $(".intro_kakaohairshop").each(function (index) {
+                        $(this).delay(delay).animate({
+                            top: (index - num + 1) + "00%"
+                        }, _slideTime, _actionType, function () {
+                            if (index - num + 1 == 0) {
+                                _actionFlag = false;
+                                clearIntervalEvent();
+
+                                if (1 == num) {
+                                    hair_change();
+                                    clearIntervalEvent = function () {
+                                        clearTimeout(setIntervalEvent);
+                                        $('#main_hair').removeClass('main_hair1 main_hair2 main_hair3 main_hair4 main_hair5 main_hair6').addClass('main_hair1');
+                                    };
+                                } else if (2 == num) {
+                                    deco_hair_change();
+                                    clearIntervalEvent = function () {
+                                        clearTimeout(setIntervalEvent);
+                                        $('#scene2').removeClass('on1 on2 on3').addClass('on1');
+                                    };
+                                }
+                            }
+                        });
+                    });
+
+                    clearSceneClass();
+                    $(".intro_kakaohairshop").removeClass("off");
+                    $(".intro_kakaohairshop").eq(_nowScene - 1).addClass("off");
+
+                    if(num != 1){
+                        $('#kakaoPromotion').delay(_moveTime).addClass("promotion_scene" + (num+1));
+                    }
+                    else if(num ==1)
+                    {
+                        $('#kakaoPromotion').delay(_moveTime).addClass("promotion_scene" + num);
+                    }
+
+                    $('.link_page').removeClass('on');
+                    $('.link_page').eq(num - 1).addClass('on');
+
+                    _nowScene = num;
+                }
+
+                function setMove(isUp) {
+
+                    if (isUp) {
+                        setScene(_nowScene - 1);
+                    } else {
+                        setScene(_nowScene + 1);
+                    }
+                }
+
+                function handle(delta) {
+                    if (Math.abs(delta) < 0.9) return;
+                    if (true == _actionFlag) return;
+
+                    if (delta < 0) {
+                        setMove(false);
+                    } else {
+                        setMove(true);
+                    }
+                }
+
+                function wheel(event) {
+                    var delta = 0;
+                    if (!event) /* For IE. */
+                        event = window.event;
+                    if (event.wheelDelta) { /* IE/Opera. */
+                        delta = event.wheelDelta / 120;
+                        /** In Opera 9, delta differs in sign as compared to IE.
+                         */
+                        if (window.opera)
+                            delta = -delta;
+                    } else if (event.detail) { /** Mozilla case. */
+                        /** In Mozilla, sign of delta is different than in IE.
+                         * Also, delta is multiple of 3.
+                         */
+                        delta = -event.detail / 3;
+                    }
+                    /** If delta is nonzero, handle it.
+                     * Basically, delta is now positive if wheel was scrolled up,
+                     * and negative, if wheel was scrolled down.
+                     */
+
+                    if (delta)
+                        handle(delta);
+                }
+
+                function hair_change(nowNum) {
+                    var nextNum = (nowNum < 6 && nowNum !== 'undefined') ? nowNum + 1 : 1;
+                    if (nowNum > 0) {
+                        $('#scene1').delay(500).removeClass('main_hair' + nowNum).addClass('main_hair' + nextNum);
+                    }
+
+                    setIntervalEvent = setTimeout(function () {
+                        hair_change(nextNum);
+                    }, 1100);
+                }
+
+                function deco_hair_change(nowNum) {
+                    var nextNum = (nowNum < 3 && nowNum !== 'undefined') ? nowNum + 1 : 1;
+                    if (nowNum > 0) {
+                        $('#scene2').removeClass('on1 on2 on3').addClass('on' + nextNum);
+                    }
+
+                    setIntervalEvent = setTimeout(function () {
+                        deco_hair_change(nextNum);
+                    }, 3000);
+                }
+            </script>
+
+
+            <style type="text/css">
+                @charset "utf-8";
+                /* reset */
+                body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,textarea,p,blockquote,th,td,input,select,textarea,button{margin:0;padding:0}
+                fieldset,img{border:0 none}
+                dl,ul,ol,menu,li {list-style:none}
+                blockquote, q {quotes:none}
+                blockquote:before, blockquote:after,q:before, q:after {content:'';content:none}
+                input,select,textarea,button {vertical-align:middle}
+                input::-ms-clear {display:none}
+                button {border:0 none;background-color:transparent;cursor:pointer}
+                body {background:#fff}
+                body,th,td,input,select,textarea,button {font-size:12px;line-height:1.5;font-family:'돋움',dotum,sans-serif;color:#333}
+                a {color:#333;text-decoration:none}
+                a:active, a:hover {text-decoration:underline}
+                a:active {background-color:transparent}
+                address,caption,cite,code,dfn,em,var {font-style:normal;font-weight:normal}
+                html,body {height:100%}
+                body {overflow:hidden}
+                /* global */
+                .ir_pm {display:block;font-size:0px;line-height:0;text-indent:-9999px}
+                .ir_wa {display:block;overflow:hidden;position:relative;z-index:-1;width:100%;height:100%}
+                .screen_out {overflow:hidden;position:absolute;width:0;height:0;line-height:0;text-indent:-9999px}
+                .hide {display:none}
+                #kakaoHead {position:fixed;left:52px;top:30px;z-index:1000} /* 2016-03-31 / 04-05 수정 */
+                #kakaoContent {height:100%;min-height:600px}
+
+                /* 2016-06-17 수정 및 추가 시작 */
+                .ico_hairshop{display:block;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/ico_hairshop_160617.png) no-repeat;text-indent:-9999px}
+                #kakaoPromotion {overflow:hidden;position:relative;height:100%}
+                #kakaoHead{position:fixed;top:0;left:0;width:100%;z-index:1000}
+                #kakaoHead .tit_hairshop{display:inline-block;margin:30px 0 0 52px}
+                #kakaoHead .btn_share{position:absolute;top:26px;right:50px;width:48px;height:48px}
+                #kakaoHead .btn_share .ico_sns{width:48px;height:48px;background-position:-55px -150px}
+                /*#kakaoHead .btn_share:hover .ico_sns{background-position:0 -150px !important} 2017-11-23 삭제 */
+                /*.promotion_scene2 #kakaoHead .btn_share .ico_sns{background-position:-110px -150px} 2017-11-23 삭제 */
+                #kakaoContent {height:100%;min-height:600px}
+                /* 2016-06-17 수정 및 추가 끝 */
+
+                .link_logo{display:block;overflow:hidden;width:200px;height:37px;font-size:0;line-height:0;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/img_logo.png) no-repeat;text-indent:-9999px}
+                /*.promotion_scene2 .link_logo{background-position:0 -37px} 2017-11-23 삭제 */
+                .txt_hairshop{display:block;overflow:hidden;font-size:0;line-height:0;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/txt_hairshop_190701.png) no-repeat;text-indent:-9999px} /* 2019-07-01 수정 */
+                .txt_balloon{display:block;overflow:hidden;font-size:0;line-height:0;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/txt_balloon.png) no-repeat;text-indent:-9999px} /* 2016-06-17 추가 */
+                .intro_kakaohairshop{overflow:hidden;position:absolute;left:0;width:100%;height:100%}
+                /* 우측 페이징 */
+                .intro_etc{position:fixed;right:62px;top:50%;z-index:100;margin-top:-90px;width:28px}
+                .paging_intro .link_page{display:block;overflow:hidden;width:13px;height:13px;margin:8px auto 0;border:3px solid rgba(0, 0, 0, 0.3);border-radius:9px;font-size:0;line-height:0;background-color:rgba(0, 0, 0, 0);text-indent:-9999px}
+                .paging_intro .on{border:3px solid #444;background-color:#444}/* 2016-03-29 수정 */
+                .promotion_scene7 .paging_intro .link_page{border:3px solid rgba(255, 255, 255, 0.5);background-color:rgba(0, 0, 0, 0)} /* 2016-03-29 추가 2017-11-23 수정 */
+                .promotion_scene7 .paging_intro .on{border:3px solid #fff;background-color:#fff} /* 2016-03-29 추가 2017-11-23 수정 */
+                /* 장면1 */
+                .promotion_scene1 .intro_type1, .intro_type1{top:0;background-color:#f7f4ee}/* 2017-11-23 수정 */
+                .intro_type1 .tit_hairshop{position:absolute;left:50%;top:50%;width:516px;height:122px;margin:-290px 0 0 -258px} /* 2016-06-17 수정 */
+                /* .intro_type1 .txt_hairlife{position:absolute;left:50%;top:50%;width:542px;height:70px;margin:284px 0 0 -271px;background-position:0 -1780px;opacity:1} 2016-11-30 삭제 */
+                /* 2016-12-02 추가 시작 */
+                .btn_app{display:block;overflow:hidden;font-size:0;line-height:0;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/btn_app.png) no-repeat;text-indent:-9999px}
+                .wrap_button{overflow:hidden;position:absolute;left:50%;top:50%;margin:286px 0 0 -224px}
+                .wrap_button .link_store{float:left;width:218px}
+                .wrap_button .btn_app{display:block;height:63px}
+                .wrap_button .link_ios .btn_ios{background-position:0 0}
+                .wrap_button .link_ios:hover .btn_ios, .wrap_button .link_ios:active .btn_ios{background-position:0 -70px}
+                .wrap_button .link_android{margin-left:12px}
+                .wrap_button .link_android .btn_android{background-position:-230px 0}
+                .wrap_button .link_android:hover .btn_android, .wrap_button .link_android:active .btn_android{background-position:-230px -70px}
+                /* 2016-12-02 추가 끝 */
+
+                .intro_type1 .deco_tool{position:absolute;top:50%;left:50%;z-index:10} /* 2016-03-24 수정 */
+                .intro_type1 .deco_tool1{width:153px;height:118px;margin:95px 0 0 -411px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_sprayer_160331.png)} /* 2016-03-31 수정 시작 */
+                .intro_type1 .deco_tool2{width:278px;height:158px;margin:-35px 0 0 214px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_dryer_160331.png)}
+                .intro_type1 .deco_tool3{width:74px;height:128px;margin:-30px 0 0 -266px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_phone_160331.png)} /* 2016-04-05 수정 */
+                .intro_type1 .deco_tool4{width:257px;height:314px;margin:-283px 0 0 -370px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_bottle_160617.png)} /* 2016-06-17 수정 */
+                .intro_type1 .deco_tool5{width:91px;height:55px;margin:-103px 0 0 134px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_scissors_160331.png)} /* 2016-04-05 수정 */
+                .intro_type1 .deco_tool6{width:50px;height:92px;margin:150px 0 0 195px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_comb_160331.png)}
+                .intro_type1 .deco_x{position:absolute;top:50%;left:50%;width:18px;height:18px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_x.png)}
+                .intro_type1 .deco_x1{margin:-147px 0 0 345px} /* 2016-06-17 수정 */
+                .intro_type1 .deco_x2{margin:-42px 0 0 -159px;transform:rotate(45deg);-webkit-transform:rotate(45deg);-o-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg)} /* 2016-06-17 수정 */
+                .intro_type1 .deco_x3{margin:-130px 0 0 -365px} /* 2016-06-17 수정 */
+                .intro_type1 .deco_x4{margin:25px 0 0 -470px}
+                .intro_type1 .deco_x5{margin:212px 0 0 -218px;transform:rotate(45deg);-webkit-transform:rotate(45deg);-o-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg)}
+                .intro_type1 .deco_x6{margin:231px 0 0 118px}
+                .intro_type1 .deco_x7{margin:27px 0 0 380px;transform:rotate(45deg);-webkit-transform:rotate(45deg);-o-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg)}
+                .intro_type1 .info_hairshop{position:fixed;left:50%;bottom:50%;margin:0 0 205px -322px}
+                .intro_type1 .info_hairshop .deco_hair{position:absolute;top:0;left:0;width:482px;height:482px} /* 2016-04-05 수정 */
+                .intro_type1 .info_hairshop .deco_hair1{display:none;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/main_hair01_160405.png)}
+                .intro_type1 .info_hairshop .deco_hair2{display:none;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/main_hair02_160405.png)}
+                .intro_type1 .info_hairshop .deco_hair3{display:none;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/main_hair03_160405.png)}
+                .intro_type1 .info_hairshop .deco_hair4{display:none;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/main_hair04_160405.png)}
+                .intro_type1 .info_hairshop .deco_hair5{display:none;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/main_hair05_160405.png)}
+                .intro_type1 .info_hairshop .deco_hair6{display:none;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/main_hair06_160405.png)} /* 2016-03-31 수정 끝 */
+                .intro_type1 .main_hair6 .deco_hair6, .intro_type1 .main_hair5 .deco_hair5, .intro_type1 .main_hair4 .deco_hair4, .intro_type1 .main_hair3 .deco_hair3, .intro_type1 .main_hair2 .deco_hair2, .intro_type1 .main_hair1 .deco_hair1{display:block} /* 2016-03-29 수정 */
+                .main_hair6 .deco_x6, .main_hair6 .deco_x4, .main_hair6 .deco_x2, .main_hair5 .deco_x7, .main_hair5 .deco_x5, .main_hair5 .deco_x3, .main_hair5 .deco_x1, .main_hair4 .deco_x6, .main_hair4 .deco_x4, .main_hair4 .deco_x2, .main_hair3 .deco_x7, .main_hair3 .deco_x5, .main_hair3 .deco_x3, .main_hair3 .deco_x1, .main_hair2 .deco_x2, .main_hair2 .deco_x4, .main_hair2 .deco_x6, .main_hair1 .deco_x1, .main_hair1 .deco_x3, .main_hair1 .deco_x5, .main_hair1 .deco_x7{background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_x_white.png)} /* 2016-03-29 수정 */
+                .off.intro_type1 .info_hairshop{margin:0 0 205px -322px} /* 2016-03-31 수정 */ /* 2016-04-05 수정 */
+                /* 장면1 - 애니메이션 */
+                .promotion_scene1 .intro_type1 .deco_tool1{-webkit-animation:tool1 3s infinite;animation:tool1 3s infinite}
+                .off.intro_type1 .deco_tool1{-webkit-animation:tool1 3s infinite;animation:tool1 3s infinite} /* 2016-03-24 추가 */
+                .promotion_scene1 .intro_type1 .deco_tool2{-webkit-animation:tool2 3s infinite;animation:tool2 3s infinite}
+                .off.intro_type1 .deco_tool2{-webkit-animation:tool2 3s infinite;animation:tool2 3s infinite} /* 2016-03-24 추가 */
+                .promotion_scene1 .intro_type1 .deco_tool3, .promotion_scene1 .intro_type1 .deco_tool5{-webkit-animation:tool3 3s infinite;animation:tool3 3s infinite}
+                .off.intro_type1 .deco_tool3, .off.intro_type1 .deco_tool5{-webkit-animation:tool3 3s infinite;animation:tool3 3s infinite} /* 2016-03-24 추가 */
+                .promotion_scene1 .intro_type1 .deco_tool4, .promotion_scene1 .intro_type1 .deco_tool6{-webkit-animation:tool4 3s infinite;animation:tool4 3s infinite}
+                .off.intro_type1 .deco_tool4, .off.intro_type1 .deco_tool6{-webkit-animation:tool4 3s infinite;animation:tool4 3s infinite} /* 2016-03-24 추가 */
+                /* .promotion_scene1 .intro_type1 .deco_x1,.promotion_scene1 .intro_type1 .deco_x3,.promotion_scene1 .intro_type1 .deco_x5,.promotion_scene1 .intro_type1 .deco_x7{-webkit-animation:shine1 4s infinite;animation:shine1 4s infinite} 2016-03-24 삭제 */
+                /* .promotion_scene1 .intro_type1 .deco_x2,.promotion_scene1 .intro_type1 .deco_x4,.promotion_scene1 .intro_type1 .deco_x6{-webkit-animation:shine2 4s infinite;animation:shine2 4s infinite} 2016-03-24 삭제 */
+                /* .promotion_scene1 .intro_type1 .item_customer .txt_hairshop, .promotion_scene1 .intro_type1 .txt_reservation, .promotion_scene1 .intro_type1 .ico_quotation,.promotion_scene1 .intro_type1 .ico_draw {display:none} 2016-03-24 삭제 */
+                /* .off .intro_type1 .item_customer{display:none} 2016-03-24 삭제 */
+                /* 2017-11-23 추가 시작 */
+                .intro_type1{position:relative}
+                .intro_type1 .img_thumb{display:block;width:100%;vertical-align:top}
+                .intro_type1 .inner_kakaohairshop{position:absolute;top:50%;left:50%;width:578px;height:700px;margin:-350px 0 0 -289px}
+                .head_hairshop{width:100%;height:154px;background:url(//i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/head_hairshop.png) no-repeat}
+                .intro_type1 .video_hairshop{position:relative;width:100%;height:409px;background:url(//i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/body_hairshop.jpg) no-repeat}
+                .list_video{overflow:hidden;position:absolute;top:330px;left:6px;width:567px;height:75px;background-color:#000}
+                .list_video
+                li{float:left;margin-right:0.6px;height:100%}
+                .list_video .item_video1{width:32.8%;margin-right:4px}
+                .list_video .item_video2{width:33.4%;margin-right:4px}
+                .list_video .item_video3{float:none;overflow:hidden;width:auto}
+                .list_video .img_choose,.list_video .on .img_yet{display:none}
+                .list_video .on .img_choose{display:block}
+                .list_video .link_video{display:block}
+                .wrap_video{padding-top:4px;width:567px;height:319px;margin:0 auto}
+                .wrap_video .video_player{width:100%;height:100%}
+                .footer_hairshop{position:relative;width:100%;height:137px;background:url(//i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/foot_hairshop_171218.jpg) no-repeat}/* 2017-12-18 수정 */
+                /*.footer_hairshop .link_sale{position:absolute;top:22px;left:58px;width:464px;height:34px} 2017-12-18 삭제 */
+                .footer_hairshop .link_apple{position:absolute;top:38px;left:65px;width:218px;height:62px}/* 2017-12-18 수정 */
+                .footer_hairshop .link_google{position:absolute;top:38px;left:295px;width:218px;height:62px}/* 2017-12-18 수정 */
+                .footer_hairshop .link_apple:hover{background:url(//i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/btn_apple_hover.jpg) no-repeat}/* 2017-11-27 추가 */
+                .footer_hairshop .link_google:hover{background:url(//i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/btn_google_hover.jpg) no-repeat}/* 2017-11-27 추가 */
+                /* 2017-11-23 추가 끝 */
+
+                /* 장면2 intro_type2 : 2016-06-17 수정 시작 */
+                .promotion_scene2 .intro_type2, .intro_type2{top:100%;background:#000 url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/bg_intro_160617.png) no-repeat 0 0;background-size:cover}
+                .intro_type2 .tit_hairshop{position:absolute;left:50%;top:50%;width:532px;height:60px;margin:-290px 0 0 -266px;background-position:0 -160px}
+                .intro_type2 .txt_reservation{position:absolute;top:50%;left:50%;width:438px;height:72px;margin:232px 0 0 -219px;background-position:0 -230px} /* 2016-06-24 수정 */
+                .intro_type2 .deco_hair{position:absolute;top:50%;left:50%;width:482px;height:482px;margin:-265px 0 0 -322px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/sub_hair02_160405.png)}  /* 2016-07-12 수정 */
+                .intro_type2 .txt_balloon{position:absolute;top:50%;left:50%;height:60px}
+                /* 2016-06-24 수정 시작 */
+                .promotion_scene2 .intro_type2 .txt_balloon{opacity:0;animation-name:balloon;-webkit-animation-name:balloon;-webkit-animation-duration :.4s;animation-duration :.4s;-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards}
+                .promotion_scene2 .intro_type2 .txt_balloon1{width:200px;margin:-124px 0 0 -276px;background-position:0 0;-webkit-animation-delay:0.5s;animation-delay:0.5s}
+                .promotion_scene2 .intro_type2 .txt_balloon2{width:200px;margin:-72px 0 0 96px;background-position:0 -70px;-webkit-animation-delay:1s;animation-delay:1s}
+                .promotion_scene2 .intro_type2 .txt_balloon3{width:200px;margin:57px 0 0 -296px;background-position:0 -140px;-webkit-animation-delay:1.5s;animation-delay:1.5s}
+                .promotion_scene2 .intro_type2 .txt_balloon4{width:150px;margin:-42px 0 0 -224px;background-position:0 -210px;-webkit-animation-delay:2s;animation-delay:2s}
+                .promotion_scene2 .intro_type2 .txt_balloon5{width:200px;margin:36px 0 0 118px;background-position:0 -280px;-webkit-animation-delay:2.5s;animation-delay:2.5s}
+                /* 2016-06-24 수정 끝 */
+                @-webkit-keyframes balloon {
+                    0% {opacity:.1;top:51%}
+                    20% {opacity:.3}
+                    40% {opacity:.5}
+                    60% {opacity:.8}
+                    100% {opacity:1;top:50%}
+                }
+                @keyframes balloon {
+                    0% {opacity:.1;top:51%}
+                    20% {opacity:.3}
+                    40% {opacity:.5}
+                    60% {opacity:.8}
+                    100% {opacity:1;top:50%}
+                }
+                .promotion_scene1 .intro_type2 .info_hairshop{animation:dissatisfy2 .5s forwards;-webkit-animation:dissatisfy2 .5s forwards} /* 2016-04-01 수정 */
+                .promotion_scene2 .intro_type2 .info_hairshop{animation:dissatisfy1 .5s forwards;-webkit-animation:dissatisfy1 .5s forwards} /* 2016-04-01 수정 */
+                .off.intro_type2 .info_hairshop{display:block} /* 2016-04-01 수정 */
+                .promotion_scene3 .off.intro_type2 .info_hairshop{animation:dissatisfy2 .5s forwards;-webkit-animation:dissatisfy2 .5s forwards} /* 2016-04-01 추가 */
+                .off.intro_type2 .deco_date, .off.intro_type2 .deco_touch{display:none} /* 2016-11-30 추가 */
+                @keyframes dissatisfy1{
+                    0%{opacity:0}
+                    20%{opacity:0}
+                    100%{opacity:1}
+                }
+                @-webkit-keyframes dissatisfy1{
+                    0%{opacity:0}
+                    20%{opacity:0}
+                    100%{opacity:1}
+                }
+                @keyframes dissatisfy2{
+                    0%{opacity:1}
+                    60%{opacity:0}
+                    100%{opacity:0}
+                }
+                @-webkit-keyframes dissatisfy2{
+                    0%{opacity:1}
+                    60%{opacity:0}
+                    100%{opacity:0}
+                }
+                /* //장면2 : 2016-06-17 수정 끝 */
+
+                /* 장면3 intro_type3 : 2016-06-17 3-4-5-6 에서 6-5-3-4로 이동 및 수정 시작 */
+                .promotion_scene5 .intro_type3, .intro_type3{top:100%;background-color:#fff}/* 2016-06-24 수정 */
+                .intro_type3 .txt_hairshop{position:absolute;top:50%;left:50%;width:470px;height:230px;margin:-130px 0 0 -420px;background-position:0 -550px} /* 2016-06-17 수정 */
+                .intro_type3 .info_hairshop{position:absolute;top:50%;left:50%;width:272px;height:580px;margin:-290px 0 0 134px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/frame_iphone1_160331.png)} /* 2016-06-17 수정 */
+                .intro_type3 .inner_phone{position:absolute;top:55px;left:10px;overflow:hidden;width:252px;height:470px}
+                .intro_type3 .inner_phone .deco_scroll_dimed{position:absolute;top:-253px;left:0;width:252px;height:800px;background-color:rgba(0,0,0,.35)}
+                .intro_type3 .inner_phone .deco_scroll{position:absolute;top:0;left:0;width:252px;height:800px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_scroll_160331.png)}
+                .intro_type3 .inner_phone .deco_date{position:absolute;top:189px;left:78px;width:44px;height:44px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_touch.jpg)}
+                .intro_type3 .inner_phone .deco_touch{position:absolute;width:44px;height:44px;border-radius:50px;background-color:#000;opacity:.2}
+                .intro_type3 .inner_phone .deco_time{position:absolute;top:136px;left:107px;width:86px;height:42px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_time.jpg)}
+                .intro_type3 .deco_popup{position:absolute;top:50%;left:-26px;z-index:1000;width:320px;height:252px;margin-top:-135px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_popup.png)} /* 2016-03-31 수정 끝 */
+                /* 장면3 - 애니메이션 : 2016-06-24 수정 시작 */
+                .off.intro_type3 .deco_touch{display:none}
+                .promotion_scene5 .intro_type3 .deco_scroll{-webkit-animation:scroll 2s forwards;animation:scroll 2s forwards;-webkit-animation-delay: 1.5s;animation-delay: 1.5s}
+                .promotion_scene5 .intro_type3 .deco_scroll_dimed{opacity:0;-webkit-animation:dimed .1s forwards;animation:dimed .1s forwards;-webkit-animation-delay: 4s;animation-delay: 4s}
+                .promotion_scene5 .intro_type3 .deco_date{-webkit-animation:date .5s forwards;animation:date .5s forwards;-webkit-animation-delay: 0.7s;animation-delay: 0.7s}
+                .promotion_scene5 .intro_type3 .deco_popup{opacity:0;-webkit-animation:popup .5s forwards;animation:popup .5s forwards;-webkit-animation-delay: 4s;animation-delay: 4s}
+                .promotion_scene5 .intro_type3 .deco_touch{opacity:0;-webkit-animation:touch 4s forwards;animation:touch 4s forwards}
+                .promotion_scene5 .intro_type3 .deco_time{opacity:0;-webkit-animation:time .3s forwards;animation:time .3s forwards;-webkit-animation-delay: 3.4s;animation-delay: 3.4s}
+                /* 2016-06-24 수정 끝 */
+                .off.intro_type3 .deco_date, .off.intro_type3 .deco_time, .off.intro_type3 .deco_popup{display:none !important} /* 2016-11-30 추가 */
+                /* //2016-06-17 장면3 수정 끝 */
+
+                /* 장면4 intro_type4 : 2016-06-17 3-4-5-6 에서 6-5-3-4로 순서 바뀜  */
+                .promotion_scene6 .intro_type4, .intro_type4{top:100%;background-color:#f3f3f3} /* 2016-06-24 수정 */
+                .intro_type4 .txt_hairshop{position:absolute;top:50%;left:50%;width:510px;height:224px;margin:-140px 0 0 -36px;background-position:0 -800px} /* 2016-06-17 수정 */
+                .intro_type4 .info_hairshop{position:absolute;top:50%;left:50%;width:272px;height:580px;margin:-290px 0 0 -391px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/frame_iphone1_160331.png)} /* 2016-06-17 수정 */
+                .intro_type4 .inner_phone{overflow:hidden;position:absolute;top:55px;left:10px;overflow:hidden;width:252px;height:470px;text-indent:-9999px} /* 2016-03-31 수정 */
+                .intro_type4 .inner_phone .deco_photo{position:absolute;top:0;left:0;width:262px;height:480px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/img_photo.jpg)}
+                .intro_type4 .inner_phone .deco_tag{position:absolute;top:-100%;left:50%;width:208px;height:409px;margin-left:-104px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_tag.png)}
+                .intro_type4 .inner_phone .deco_won{position:absolute;top:50%;left:50%;width:133px;height:131px;margin:67px 0 0 -123px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_won.png)}
+                /* 장면4 - 애니메이션 */
+                /*.off.intro_type4 .inner_phone .deco_tag{top:0} 2016-11-30 삭제 */
+                .promotion_scene6 .intro_type4 .inner_phone .deco_tag{-webkit-animation:tag .3s forwards;animation:tag .3s forwards;-webkit-animation-delay: 1.5s;animation-delay: 1.5s} /* 2016-06-24 수정 */
+                .promotion_scene6 .intro_type4 .inner_phone .deco_won{opacity:0;-webkit-animation:won .5s forwards;animation:won .5s forwards;-webkit-animation-delay: 2.2s;animation-delay: 2.2s} /* 2016-06-24 수정 */
+                .off.intro_type4 .info_hairshop .inner_phone .deco_won{opacity:0} /* 2016-11-30 추가 */
+
+                /* 장면5 intro_type5 : 2016-06-17 promotion_scene4 으로 이동 */
+                .promotion_scene4 .intro_type5, .intro_type5{top:100%;background:#fff} /* 2016-06-24 수정 */
+                .intro_type5 .txt_hairshop{position:absolute;top:50%;left:50%;width:450px;height:226px;margin:-137px 0 0 -30px;background-position:0 -310px} /* 2016-06-24 수정 */
+                .intro_type5 .info_hairshop{position:absolute;top:50%;left:50%;width:272px;height:580px;margin:-290px 0 0 -391px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/frame_iphone1_160331.png)}
+                .intro_type5 .inner_phone{overflow:hidden;position:absolute;top:55px;left:-37px;overflow:hidden;width:299px;height:470px;text-indent:-9999px}
+                .intro_type5 .deco_card{position:absolute;top:16px;left:0;width:280px;height:430px}
+                .intro_type5 .deco_card1{z-index:100;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_card1.jpg)} /* 2016-06-17 수정 */
+                .intro_type5 .deco_card2{z-index:99;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_card2.jpg)} /* 2016-06-17 수정 */
+                .intro_type5 .deco_card3{z-index:98;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_card3.jpg)} /* 2016-06-17 수정 */
+                /* 장면5 - 애니메이션 */
+                .promotion_scene4 .intro_type5 .deco_card1{-webkit-animation:card 1.5s forwards;animation:card 1.5s forwards;-webkit-animation-delay:0.6s;animation-delay:0.6s} /* 2016-06-24 수정 */
+                .promotion_scene4 .intro_type5 .deco_card2{-webkit-animation:card 1.5s forwards;animation:card 1.5s forwards;-webkit-animation-delay:3.5s;animation-delay:3.5s} /* 2016-06-24 수정 */
+                /* .off.intro_type5 .deco_card3{position:absolute;top:16px;left:0;width:280px;height:430px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_card3.jpg)} 2016-11-30 삭제 */
+
+                /* 장면6 intro_type6 : 2016-06-17 수정 시작 */
+                .promotion_scene3 .intro_type6, .intro_type6{top:100%;background-color:#ffe32a}/* 2016-06-24 수정 */
+                .intro_type6 .txt_hairshop{position:absolute;top:50%;left:50%;z-index:100;width:330px;height:224px;margin:-139px 0 0 -419px;background-position:0 -1040px}
+                .intro_type6 .frame_phone{position:absolute;left:50%;top:50%;width:288px;height:596px;margin:-290px 0 0 136px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/frame_iphone2_160816.png)} /* 2017-04-24 수정 */
+                .intro_type6 .inner_phone{overflow:hidden;position:absolute;top:55px;left:10px;width:254px;height:470px;text-indent:-9999px}
+                .intro_type6 .inner_phone .phone_slide{overflow:hidden;width:200%;height:100%}
+                .intro_type6 .inner_phone .talk_more{float:left;width:0%;height:460px;z-index:10;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/img_kt_more.png)}
+                .intro_type6 .inner_phone .talk_phone{overflow:hidden;position:relative;float:left;width:254px;height:470px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/frame_iphone3_160617.png);text-indent:-9999px}
+                .intro_type6 .txt_balloon{position:absolute;top:50%;left:50%;width:254px;height:42px;margin:-158px 0 0 -127px}
+
+                /* 2016-11-30 추가 시작 */
+                .intro_type6 .deco_talk1{margin:-158px 0 0 -127px;background-position:0 -345px}
+                .intro_type6 .deco_talk2{margin:-111px 0 0 -127px;background-position:0 -395px}
+                .intro_type6 .deco_talk3{margin:-48px 0 0 -127px;background-position:0 -445px}
+                .intro_type6 .deco_talk4{margin:0 0 0 -127px;background-position:0 -495px}
+                .intro_type6 .deco_talk5{margin:48px 0 0 -127px;background-position:0 -545px}
+                /* 2016-11-30 추가 끝 */
+
+                .intro_type6 .talk_touch{position:absolute;width:44px;height:44px;border-radius:50px;background-color:#000;opacity:.2}
+                .intro_type6 .talk_direct{overflow:hidden;position:absolute;top:186px;right:-24px;width:175px;height:175px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/img_zoom.png);text-indent:-9999px}
+
+                /* 장면6 - 애니메이션 */
+                .off.intro_type6 .deco_hairlogo, .off.intro_type6 .deco_hairopen{top:50%}
+
+                /* 2016-11-30 수정 및 추가 시작 */
+                .promotion_scene3 .intro_type6 .talk_more{-webkit-animation:talk_more 0.5s forwards;animation:talk_more 0.5s forwards;-webkit-animation-delay:5s;animation-delay:5s}
+                .promotion_scene3 .intro_type6 .talk_touch, .promotion_scene4 .intro_type6 .talk_touch{opacity:0;-webkit-animation:talk_touch 2s forwards;animation:talk_touch 2s forwards;-webkit-animation-play-state:running;animation-play-state:running;-webkit-animation-delay:3s;animation-delay:3s}
+                .promotion_scene3 .intro_type6 .talk_direct{opacity:0;-webkit-animation:talk_direct 0.7s forwards;animation:talk_direct 0.7s forwards;-webkit-animation-delay:5.5s;animation-delay:5.5s}
+                .promotion_scene3 .intro_type6 .deco_talk3, .promotion_scene3 .intro_type6 .deco_talk4, .promotion_scene3 .intro_type6 .deco_talk5{opacity:0;animation-name:balloon2;-webkit-animation-name:balloon2;-webkit-animation-duration :.4s;animation-duration :.4s;-webkit-animation-fill-mode:forwards;animation-fill-mode:forwards}
+                .promotion_scene3 .intro_type6 .deco_talk3{-webkit-animation-delay:1.5s;animation-delay:1.5s}
+                .promotion_scene3 .intro_type6 .deco_talk4{-webkit-animation-delay:2.5s;animation-delay:2.5s}
+                .promotion_scene3 .intro_type6 .deco_talk5{-webkit-animation-delay:3s;animation-delay:3s}
+                .promotion_scene2 .intro_type6 .talk_direct, .promotion_scene4 .intro_type6 .talk_direct{opacity:0}
+                .off.intro_type6 .talk_touch, .off.intro_type6 .talk_phone .txt_balloon{-webkit-animation:fadeout .5s forwards;animation:fadeout .5s forwards}
+                /* 2016-11-30 수정 및 추가 끝 */
+
+                @keyframes phone_slide {
+                    0% {left:0}
+                    50% {left:100%}
+                    100% {left:100%}
+                }
+                @-webkit-keyframes phone_slide {
+                    0% {left:0}
+                    50% {left:100%}
+                    100% {left:100%}
+                }
+                @-webkit-keyframes balloon2 {
+                    0% {opacity:.1;top:51%}
+                    20% {opacity:.3}
+                    40% {opacity:.5}
+                    60% {opacity:.8}
+                    100% {opacity:1;top:50%}
+                }
+                @keyframes balloon2 {
+                    0% {opacity:.1;top:51%}
+                    20% {opacity:.3}
+                    40% {opacity:.5}
+                    60% {opacity:.8}
+                    100% {opacity:1;top:50%}
+                }
+                @keyframes talk_touch {
+                    0% {top:110px;left:55px;opacity:0;opacity:.2}
+                    25% {top:110px;left:55px;transform:scale(1)}
+                    55% {top:55px;left:0;transform:scale(1);opacity:.2}
+                    60% {top:55px;left:0;transform:scale(1.2);opacity:.2}
+                    70% {top:55px;left:0;transform:scale(1);opacity:.2}
+                    80% {top:55px;left:0;transform:scale(1.2);opacity:.2}
+                    90% {top:55px;left:0;transform:scale(1);opacity:.2}
+                    100% {top:55px;left:0;transform:scale(0);opacity:0;opacity:.2}
+                }
+                @-webkit-keyframes talk_touch {
+                    0% {top:110px;left:55px;opacity:0;opacity:.2}
+                    25% {top:110px;left:55px;transform:scale(1)}
+                    55% {top:55px;left:0;transform:scale(1);opacity:.2}
+                    60% {top:55px;left:0;transform:scale(1.2);opacity:.2}
+                    70% {top:55px;left:0;transform:scale(1);opacity:.2}
+                    80% {top:55px;left:0;transform:scale(1.2);opacity:.2}
+                    90% {top:55px;left:0;transform:scale(1);opacity:.2}
+                    100% {top:55px;left:0;transform:scale(0);opacity:0;opacity:.2}
+                }
+                @keyframes talk_more {
+                    0% {width:0%}
+                    50% {width:50%}
+                    100% {width:50%}
+                }
+                @-webkit-keyframes talk_more {
+                    0% {width:0%}
+                    50% {width:50%}
+                    100% {width:50%}
+                }
+                @keyframes talk_direct {
+                    0% {opacity:.7;transform:scale(.4)}
+                    50% {opacity:1;transform:scale(1)}
+                    100% {opacity:1;transform:scale(1)}
+                }
+                @-webkit-keyframes talk_direct {
+                    0% {opacity:.7;transform:scale(.4)}
+                    50% {opacity:1;transform:scale(1)}
+                    100% {opacity:1;transform:scale(1)}
+                }
+                /* 장면6 : 2016-06-17 수정 끝 */
+
+                /* 장면7 */
+                .promotion_scene7 .intro_type7, .intro_type7{top:100%}
+                .intro_type7 .hair_culture{position:relative;float:left;width:50%;height:100%;box-sizing:border-box}
+                .intro_type7 .tit_culture {position:absolute;top:50%;left:50%;z-index:100;width:596px;height:121px;margin:-380px 0 0 -298px;background-position:0 -1490px} /* 2016-06-17 수정 */
+                .intro_type7 .inner_commingsoon{position:absolute;top:50%;width:361px;height:430px;margin-top:-229px}
+                .intro_type7 .comming_soon{background-color:#ffe32a}
+                .intro_type7 .comming_soon .img_hairshop{display:block;width:220px;height:212px;margin:0 auto 40px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_user.png)}
+                .intro_type7 .comming_soon .txt_commingsoon{display:block;width:330px;height:90px;margin:0 auto;background-position:0 -1280px} /* 2016-06-17 수정 */
+                .intro_type7 .comming_soon .inner_commingsoon{right:10%}
+                .intro_type7 .no_show{background-color:#17cec4}
+                .intro_type7 .no_show .img_hairshop{display:block;width:297px;height:218px;margin:0 0 34px 15px;background:url(http://i1.daumcdn.net/img-contents/event/promotion/160317_kakaohairshop/pc/deco_shop.png)} /* 2016-04-06 수정 */
+                .intro_type7 .no_show .txt_noshow{display:block;width:290px;height:60px;margin:0 auto 29px;background-position:0 -1380px} /* 2016-06-17 수정 */
+                .intro_type7 .no_show .inner_commingsoon{left:10%}
+
+
+
+                /* 2019-07-01 수정, 추가 시작 */
+                .intro_type7 .btn_reservation{float:left;width:160px;height:34px;padding-top:16px;border-radius:25px}
+                .intro_type7 .no_show .btn_reservation{margin-left:15px;background-color:#2c3339}
+                .intro_type7 .no_show .btn_reservation+.btn_reservation{margin-left:10px}
+                .intro_type7 .no_show .btn_reservation .txt_hairshop{width:119px;height:18px;margin:0 auto}
+                .intro_type7 .no_show .btn_hair .txt_hairshop{background-position:0 -1850px}
+                .intro_type7 .no_show .btn_nail .txt_hairshop{background-position:0 -1870px}
+                /* 2019-07-01 수정, 추가 끝 */
+
+
+
+                /* 장면7 - 애니메이션 */
+                .intro_type7 .tit_culture{-webkit-animation:beauty linear 3s infinite;animation:beauty linear 3s infinite}
+                /* 배너 & 푸터 */
+                .intro_type7 .intro_company{display:block;position:absolute;bottom:0;width:100%;height:100px;background:#fff}/* 2016-03-31 수정 */ /* 2016-04-05 수정 */
+                .intro_type7 .desc_company {height:40px;margin:31px auto 0;font-size:14px;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;color:#888;text-align:center} /* 2016-03-31 수정 */
+                .intro_type7 .info_copyright{display:block;margin-top:3px;font-size:14px} /* 2016-04-05 수정 */
+                .intro_type7 .link_kakao {color:#888}
+
+                /* 2016-06-17 추가 시작 : 공유하기 레이어 */
+                .sns_layer{display:none;position:absolute;top:88px;right:54px;width:404px;height:280px;z-index:1000;border:1px solid rgba(0,0,0,.1);background-color:#fff}  /* 2016-06-28 수정 */
+                .sns_layer .list_social{overflow:hidden;padding:4px 0 23px 14px} /* 2016-06-28 수정 */
+                .sns_layer .list_social li{float:left;width:94px;margin-top:25px} /* 2016-06-24 수정 */
+                .sns_layer .link_sns{display:block;height:106px;font-size:16px;line-height:24px;color:#2a2a2a;letter-spacing:-0.03em;text-align:center}  /* 2016-06-24 수정 */
+                .sns_layer .link_sns .ico_hairshop{display:block;width:70px;height:70px;margin:0 auto 12px}
+                .sns_layer .link_sns .ico_sns_kt{background-position:0 0}
+                .sns_layer .link_sns .ico_sns_mp{background-position:-75px 0}
+                .sns_layer .link_sns .ico_sns_face{background-position:-150px 0}
+                .sns_layer .link_sns .ico_sns_twi{background-position:0 -75px}
+                .sns_layer .link_sns .ico_sns_band{background-position:-75px -75px}
+                .sns_layer .info_url{position:relative;padding:25px 30px 0;border-top:1px solid #eee} /* 2016-06-24 수정 */
+                .sns_layer .inp_url{overflow:hidden;width:100%;height:46px;padding-top:2px;text-indent:10px;border:2px solid #d8d8d8;font-size:15px;line-height:20px;font-family:Roboto;color:#919191;resize:none;-webkit-appearance:none;-webkit-box-sizing:border-box;box-sizing:border-box;white-space:nowrap} /* 2016-06-24 수정 */
+                .sns_layer .desc_url{display:block;margin:8px 0 0 12px;font-size:15px;color:#2a2a2a} /* 2016-06-24 수정 */
+                .open_layer{display:block}
+                /* //2016-06-17 추가 끝 : 공유하기 레이어 */
+
+                /* 2016-04-05 추가 시작 */
+                @media only screen and (max-device-height: 900px) {
+                    .intro_type7 .tit_culture{margin:-285px 0 0 -320px}
+                    .intro_type7 .intro_company{height:60px}
+                    .intro_type7 .desc_company{margin:20px auto 0}
+                    .intro_type7 .inner_commingsoon{margin-top:-150px}
+                    .intro_type7 .info_copyright{display:inline}
+                    .intro_type7 .no_show .txt_noshow,.intro_type7 .comming_soon .txt_commingsoon{margin:0 auto 15px}
+                }
+                /* 2016-04-05 추가 끝 */
+
+
+                @keyframes dimed {
+                    0% {opcity:0;z-index:0}
+                    10% {opacity:1;z-index:1}
+                    100% {opacity:1;z-index:100}
+                }
+                @-webkit-keyframes dimed {
+                    0% {opcity:0;z-index:0}
+                    10% {opacity:1;z-index:1}
+                    100% {opacity:1;z-index:100}
+                }
+                @keyframes change {
+                    0% {}
+                    100% {margin:0 0 252px -313px}
+                }
+                @-webkit-keyframes change {
+                    0% {}
+                    100% {margin:0 0 252px -313px}
+                }
+                @keyframes scroll {
+                    0% {opacity:1}
+                    80% {top:-253px}
+                    95% {}
+                    100% {top:-253px;opcity:0}
+                }
+                @-webkit-keyframes scroll {
+                    0% {opacity:1}
+                    80% {top:-253px}
+                    95% {}
+                    100% {top:-253px;opcity:0}
+                }
+                @keyframes touch {
+                    0% {top:0;left:80px;opacity:0;opacity:.2}
+                    20% {top:190px;left:83px;transform:scale(1)}
+                    25% {top:190px;left:83px;transform:scale(1.5)}
+                    30% {top:190px;left:83px;transform:scale(1)}
+                    40% {top:230px;left:140px;transform:scale(1)}
+                    70% {top:140px;left:140px;transform:scale(1)}
+                    80% {top:140px;left:131px;transform:scale(1.2);opacity:.2}
+                    100% {top:140px;left:131px;transform:scale(.2);opacity:0}
+                }
+                @-webkit-keyframes touch {
+                    0% {top:0;left:80px;opacity:0;opacity:.2}
+                    20% {top:190px;left:83px;transform:scale(1)}
+                    25% {top:190px;left:83px;transform:scale(1.5)}
+                    30% {top:190px;left:83px;transform:scale(1)}
+                    40% {top:230px;left:140px;transform:scale(1)}
+                    70% {top:140px;left:140px;transform:scale(1)}
+                    80% {top:140px;left:131px;transform:scale(1.2);opacity:.2}
+                    100% {top:140px;left:131px;transform:scale(.2);opacity:0}
+                }
+                @-webkit-keyframes date {
+                    0% {opacity:1}
+                    100% {opacity:0}
+                }
+                @keyframes date {
+                    0% {opacity:1}
+                    100% {opacity:0}
+                }
+                @-webkit-keyframes time {
+                    0% {opacity:0}
+                    100% {opacity:1}
+                }
+                @keyframes time {
+                    0% {opacity:0}
+                    100% {opacity:1}
+                }
+                @-webkit-keyframes popup {
+                    0% {opacity:.1;top:40%;z-index:101}
+                    20% {opacity:.3;z-index:101}
+                    40% {opacity:.5;z-index:101}
+                    60% {opacity:.8;z-index:101}
+                    100% {opacity:1;top:50%;z-index:101}
+                }
+                @keyframes popup {
+                    0% {opacity:.1;top:40%}
+                    20% {opacity:.3}
+                    40% {opacity:.5}
+                    60% {opacity:.8}
+                    100% {opacity:1;top:50%}
+                }
+                @-webkit-keyframes talk {
+                    0% {top:150%}
+                    40% {top:50%}
+                    50% {top:50%}
+                    80% {top:-50%}
+                    100% {top:-50%}
+                }
+                @keyframes talk {
+                    0% {top:150%}
+                    40% {top:50%}
+                    50% {top:50%}
+                    80% {top:-50%}
+                    100% {top:-50%}
+                }
+                @-webkit-keyframes open {
+                    0%{top:150%}
+                    50% {top:50%}
+                    100%{top:50%}
+                }
+                @keyframes open {
+                    0%{top:150%}
+                    50% {top:50%}
+                    100%{top:50%}
+                }
+                @-webkit-keyframes logo {
+                    0%{top:150%}
+                    50% {top:50%}
+                    100%{top:50%}
+                }
+                @keyframes logo {
+                    0%{top:150%}
+                    50% {top:50%}
+                    100%{top:50%}
+                }
+                @-webkit-keyframes card {
+                    0% {}
+                    60% {top:16px;left:0;transform:rotate(0)}
+                    100% {top:380px;left:380px;transform:rotate(90deg)}
+                }
+                @keyframes card {
+                    0% {}
+                    60% {top:16px;left:0;transform:rotate(0)}
+                    100% {top:380px;left:380px;transform:rotate(90deg)}
+                }
+                @-webkit-keyframes talk1 {
+                    0% {opacity:0}
+                    23.33% {opacity:1}
+                    33.33% {opacity:0}
+                    66.66% {opacity:0}
+                    100% {opacity:0}
+                }
+                @keyframes talk1 {
+                    0% {opacity:0}
+                    23.33% {opacity:1}
+                    33.33% {opacity:0}
+                    66.66% {opacity:0}
+                    100% {opacity:0}
+                }
+                @-webkit-keyframes talk2 {
+                    33.33% {opacity:0}
+                    56.66% {opacity:1}
+                    66.66% {opacity:0}
+                    100% {opacity:0}
+                }
+                @keyframes talk2 {
+                    33.33% {opacity:0}
+                    56.66% {opacity:1}
+                    66.66% {opacity:0}
+                    100% {opacity:0}
+                }
+                @-webkit-keyframes talk3 {
+                    33.33% {opacity:0}
+                    66.66% {opacity:0}
+                    89.99% {opacity:1}
+                    100% {opacity:0}
+                }
+                @keyframes talk3 {
+                    33.33% {opacity:0}
+                    66.66% {opacity:0}
+                    89.99% {opacity:1}
+                    100% {opacity:0}
+                }
+                @keyframes tag {
+                    0% {top:-86%}
+                    100% {top:0}
+                }
+                @-webkit-keyframes tag {
+                    0% {top:-86%}
+                    100% {top:0}
+                }
+                @-webkit-keyframes won {
+                    0% {opacity:0;transform:scale(1.5)}
+                    100% {opacity:1;transform:scale(1)}
+                }
+                @keyframes won {
+                    0% {opacity:0;transform:scale(1.5)}
+                    100% {opacity:1;transform:scale(1)}
+                }
+                @-webkit-keyframes bgmove {
+                    0% {top:0}
+                    100% {top:-500%}
+                }
+                @keyframes bgmove {
+                    0% {top:0}
+                    100% {top:-500%}
+                }
+                @-webkit-keyframes tool1 {
+                    0% {transform:translateY(0)}
+                    20% {transform:translateY(-20px)}
+                    50% {transform:translateY(0)}
+                    80% {transform:translateY(20px)}
+                    100% {transform:translateY(0)}
+                }
+                @keyframes tool1 {
+                    0% {transform:translateY(0)}
+                    20% {transform:translateY(-20px)}
+                    50% {transform:translateY(0)}
+                    80% {transform:translateY(20px)}
+                    100% {transform:translateY(0)}
+                }
+                @-webkit-keyframes tool2 {
+                    0% {transform:translateY(-20px)}
+                    20% {transform:translateY(0)}
+                    50% {transform:translateY(-20px)}
+                    80% {transform:translateY(0)}
+                    100% {transform:translateY(-20px)}
+                }
+                @keyframes tool2 {
+                    0% {transform:translateY(-20px)}
+                    20% {transform:translateY(0)}
+                    50% {transform:translateY(-20px)}
+                    80% {transform:translateY(0)}
+                    100% {transform:translateY(-20px)}
+                }
+                @-webkit-keyframes tool3 {
+                    0% {transform:translateY(0)}
+                    25% {transform:translateY(-20px)}
+                    50% {transform:translateY(0)}
+                    75% {transform:translateY(-20px)}
+                    100% {transform:translateY(0)}
+                }
+                @keyframes tool3 {
+                    0% {transform:translateY(0)}
+                    25% {transform:translateY(-20px)}
+                    50% {transform:translateY(0)}
+                    75% {transform:translateY(-20px)}
+                    100% {transform:translateY(0)}
+                }
+                @-webkit-keyframes tool4 {
+                    0% {transform:translateY(-20px)}
+                    25% {transform:translateY(0)}
+                    50% {transform:translateY(-20px)}
+                    75% {transform:translateY(0)}
+                    100% {transform:translateY(-20px)}
+                }
+                @keyframes tool4 {
+                    0% {transform:translateY(-20px)}
+                    25% {transform:translateY(0)}
+                    50% {transform:translateY(-20px)}
+                    75% {transform:translateY(0)}
+                    100% {transform:translateY(-20px)}
+                }
+                @-webkit-keyframes bgmove2 {
+                    0% {}
+                    100% {transform:translateY(-5000px)}
+                }
+                @keyframes bgmove2 {
+                    0% {}
+                    100% {transform:translateY(-5000px)}
+                }
+                @-webkit-keyframes quotate {
+                    0% {opacity:0}
+                    100% {opacity:1}
+                }
+                @keyframes quotate {
+                    0% {opacity:0}
+                    100% {opacity:1}
+                }
+                @-webkit-keyframes beauty{
+                    0% {top:50%}
+                    20% {top:49%}
+                    50% {top:50%}
+                    80% {top:49%}
+                    100% {top:50%}
+                }
+                @keyframes beauty{
+                    0% {top:50%}
+                    20% {top:49%}
+                    50% {top:50%}
+                    80% {top:49%}
+                    100% {top:50%}
+                }
+                /* 2016-11-30 추가 시작 */
+                @keyframes fadeout{
+                    0%{}
+                    60%{opacity:0}
+                    100%{opacity:0}
+                }
+                @-webkit-keyframes fadeout{
+                    0%{}
+                    60%{opacity:0}
+                    100%{opacity:0}
+                }
+                /* //2016-11-30 추가 끝 */	</style>
+        </head>
+        <body>
+        <div id="kakaoPromotion" class="promotion_scene1">
+            <!--장면마다 클래스 교체 promotion_scene1~promotion_scene7-->
+            <div id="kakaoHead">
+                <h1 class="tit_hairshop"><span id="kakaoServiceLogo" class="link_logo">KakaoHairshop</span></h1>
+                <button class="btn_share"><span class="ico_hairshop ico_sns">공유하기</span></button>
+            </div> <!-- 2016-06-17 h1에 클래스 추가 / btn_share 추가 -->
+            <hr class="hide">
+            <div id="kakaoContent">
+                <!-- 장면1 -->
+                <div class="intro_kakaohairshop intro_type1" style="">
+                    <!--공통적으로 다른화면전환 이전에 해당되는 화면부분에 off 추가 로 화면전환 효과 추가-->
+                    <div class="inner_kakaohairshop">
+                        <h2 class="ir_pm head_hairshop"><span class="ir_pm">카카오가 찾아준 헤어샵</span>카카오 헤어샵</h2>
+                        <div class="video_hairshop">
+                            <strong class="screen_out">동영상 리스트</strong>
+                            <ul class="list_video">
+                                <li class="item_video1">
+                                    <a href="//tv.kakao.com/embed/player/cliplink/380448234?service=kakao_tv&extensions=false&showinfo=false&menu=false" class="link_video on"><!-- 활성화시 .on 부여 -->
+                                        <img src="//t1.kakaocdn.net/kakaohairshop/assets/images/promotion/pc/171122_tvad/btn_vod1_pc.png" class="img_thumb img_yet" alt="스타일편">
+                                        <img src="//t1.kakaocdn.net/kakaohairshop/assets/images/promotion/pc/171122_tvad/btn_vod1_pc_on.png" class="img_thumb img_choose" alt="스타일편">
+                                    </a>
+                                </li>
+                                <li class="item_video2">
+                                    <a href="//tv.kakao.com/embed/player/cliplink/380448323?service=kakao_tv&extensions=false&showinfo=false&menu=false" class="link_video"><!-- 활성화시 .on 부여 -->
+                                        <img src="//t1.kakaocdn.net/kakaohairshop/assets/images/promotion/pc/171122_tvad/btn_vod2_pc.png" class="img_thumb img_yet" alt="디자이너편">
+                                        <img src="//t1.kakaocdn.net/kakaohairshop/assets/images/promotion/pc/171122_tvad/btn_vod2_pc_on.png" class="img_thumb img_choose" alt="디자이너편">
+                                    </a>
+                                </li>
+                                <li class="item_video3">
+                                    <a href="//tv.kakao.com/embed/player/cliplink/380448373?service=kakao_tv&extensions=false&showinfo=false&menu=false" class="link_video"><!-- 활성화시 .on 부여 -->
+                                        <img src="//t1.kakaocdn.net/kakaohairshop/assets/images/promotion/pc/171122_tvad/btn_vod3_pc.png" class="img_thumb img_yet" alt="리뷰편">
+                                        <img src="//t1.kakaocdn.net/kakaohairshop/assets/images/promotion/pc/171122_tvad/btn_vod3_pc_on.png" class="img_thumb img_choose" alt="리뷰편">
+                                    </a>
+                                </li>
+                            </ul>
+                            <strong class="screen_out">카카오헤어샵 광고영상 보기</strong>
+                            <div class="wrap_video">
+                                <iframe class="video_player" title="헤어디자이너 안나" src="//tv.kakao.com/embed/player/cliplink/380448234?service=kakao_tv&extensions=false&showinfo=false&menu=false" allowfullscreen frameborder="0" scrolling="no"></iframe>
+                            </div>
+                        </div>
+                        <div class="footer_hairshop">
+                            <!-- <a href="#none" class="ir_pm link_sale">지금 앱을 다운받고 첫 예약 1만원 할인받으세요.(~12/31)</a> 2017-12-18 삭제 -->
+                            <a href="https://itunes.apple.com/kr/app/kakaoheeosyab-kakaohairshop/id1173776109" class="ir_pm link_apple">App Store 바로가기</a>
+                            <a href="https://play.google.com/store/apps/details?id=com.kakao.beauty.hairshop" class="ir_pm link_google">Google Play 바로가기</a>
+                        </div>
+                    </div>
+                    <!-- <h2 class="txt_hairshop tit_hairshop">이제 머리하기 쉬워진다!</h2>--> <!-- 2016-11-30 수정 -->
+                    <!-- <p class="txt_hairshop txt_hairlife">스타일 검색, 예약 및 결제까지 한번에~ 카카오톡 더보기에서 ‘헤어샵 예약’을 찾아주세요!</p> 2016-11-30 삭제 -->
+                    <!-- 2016-12-02 수정 시작 -->
+
+
+
+                    <!--  <div class="wrap_button">
+                          <strong class="screen_out">앱스토어 바로가기</strong>
+                          <a href="https://itunes.apple.com/kr/app/kakaoheeosyab-kakaohairshop/id1173776109" class="link_store link_ios"><span class="btn_app btn_ios">App Store</span></a>
+                          <a href="https://play.google.com/store/apps/details?id=com.kakao.beauty.hairshop" class="link_store link_android"><span class="btn_app btn_android">Google Play</span></a>
+                      </div> --> <!-- //2016-12-02 수정 끝 -->
+                    <!--<span class="deco_tool deco_tool1"></span>
+                    <span class="deco_tool deco_tool2"></span>
+                    <span class="deco_tool deco_tool3"></span>
+                    <span class="deco_tool deco_tool4"></span>
+                    <span class="deco_tool deco_tool5"></span>
+                    <span class="deco_tool deco_tool6"></span>
+                    <div id="scene1" class="main_hair1">
+                        <div class="info_hairshop">
+                            <span class="deco_hair deco_hair1"></span>
+                            <span class="deco_hair deco_hair2"></span>
+                            <span class="deco_hair deco_hair3"></span>
+                            <span class="deco_hair deco_hair4"></span>
+                            <span class="deco_hair deco_hair5"></span>
+                            <span class="deco_hair deco_hair6"></span>
+                        </div>
+                        <span class="deco_x deco_x1"></span>
+                        <span class="deco_x deco_x2"></span>
+                        <span class="deco_x deco_x3"></span>
+                        <span class="deco_x deco_x4"></span>
+                        <span class="deco_x deco_x5"></span>
+                        <span class="deco_x deco_x6"></span>
+                        <span class="deco_x deco_x7"></span>
+                    </div>-->
+                    <!-- main_hair1 ~ 6 클래스 반복 -->
+                    <!--// 2017-11-23 수정,추가 끝 -->
+                </div>
+                <!-- 장면2 -->
+
+                <!-- 장면3 : 2016-06-24 : 3-4-5-6 에서 6-5-3-4로 순서 바뀜 -->
+                <div class="intro_kakaohairshop intro_type6" style="">
+                    <h3 class="txt_hairshop">카카오톡 안의 카카오헤어샵</h3>
+                    <!-- 2016-06-17 수정 시작 -->
+                    <p class="ir_pm">친구와 톡 하는 중 머리하고 싶어지면 카톡 더보기에서 바로 예약하세요!</p>
+                    <div class="frame_phone">
+                        <div class="inner_phone">
+                            <div class="phone_slide">
+                                <div class="talk_more">카카오톡 더보기 메뉴 실행</div>
+                                <div class="talk_phone">
+                                    <span class="txt_balloon deco_talk1">기분전환하고 싶다</span>
+                                    <span class="txt_balloon deco_talk2">내일 머리하러 갈까?</span>
+                                    <span class="txt_balloon deco_talk3">그래 좋아!</span>
+                                    <span class="txt_balloon deco_talk4">카톡에서 바로</span>
+                                    <span class="txt_balloon deco_talk5">헤어샵 예약할께</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="talk_touch"></span>
+                        <div class="talk_direct">카카오헤어샵 바로가기</div>
+                    </div> <!-- //2016-06-17 수정 끝 -->
+                </div>
+                <!-- 장면4 : 2016-06-24 : 3-4-5-6 에서 6-5-3-4로 순서 바뀜 -->
+                <div class="intro_kakaohairshop intro_type5" style="">
+                    <h3 class="txt_hairshop">내 스타일에 맞춘 헤어샵 간편검색! 헤어샵 찾을 때 꼭 필요한 위치와 가격정보, 실제 시술 후기까지 다 있으니까, 헤어샵 선택이 쉬워져요!</h3>
+                    <div id="scene5" class="info_hairshop">
+                        <div class="inner_phone">
+                            <span class="deco_card deco_card1">심야영업 헤어샵, 늦은 밤에도 걱정없이 머리하세요!</span>
+                            <span class="deco_card deco_card2">애완견 동반 가능 헤어샵, 마음편히 애완견이랑 오세요!</span>
+                            <span class="deco_card deco_card3">붙임머리 전문 헤어샵, 자연스러운 긴머리로 변신!</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 장면5 : 2016-06-24 : 3-4-5-6 에서 6-5-3-4로 순서 바뀜 -->
+                <div class="intro_kakaohairshop intro_type3" style="">
+                    <h3 class="txt_hairshop">모바일로 쉽고 편리하게 예약! 몇 번의 터치만으로 원하는 헤어샵과 서비스를 언제나 쉽고 편리하게 예약할 수 있어요.</h3>
+                    <div id="scene3" class="info_hairshop">
+                        <div class="inner_phone">
+                            <span class="deco_scroll"></span>
+                            <span class="deco_scroll_dimed"></span>
+                            <span class="deco_date"></span>
+                            <span class="deco_touch"></span>
+                            <span class="deco_time"></span>
+                        </div>
+                        <span class="deco_popup"></span>
+                    </div>
+                </div>
+                <!-- 장면6 : 2016-06-24 : 3-4-5-6 에서 6-5-3-4로 순서 바뀜 -->
+                <div class="intro_kakaohairshop intro_type4" style="">
+                    <h3 class="txt_hairshop">투명한 가격 공개로 부담없이 머리해요! 원하는 가격대를 바로 찾고, 미리 결제해서 부담없이 머리할 수 있어요! 합리적 가격으로 구성된
+                        카카오헤어Pick 메뉴는 현명한 소비자로 만들어줘요.</h3>
+                    <div id="scene4" class="info_hairshop">
+                        <div class="inner_phone">
+                            <span class="deco_photo"></span>
+                            <span class="deco_tag">카카오헤어 Pick (일반컷 + 에코클리닉)</span>
+                            <span class="deco_won">80,000</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 장면7 -->
+                <div class="intro_kakaohairshop intro_type7" style="">
+                    <h3 class="txt_hairshop tit_culture">카카오헤어샵이 만드는 새로운 뷰티예약문화</h3>
+                    <div class="hair_culture comming_soon">
+                        <div class="inner_commingsoon">
+                            <span class="img_hairshop"></span><!-- 2016-06-17 수정 -->
+                            <span class="txt_hairshop txt_commingsoon">이용자 마음에 쏙드는 헤어샵, 카카오톡 더보기에서 ‘헤어샵 예약’을 찾아주세요</span> <!-- 2016-06-17 수정 -->
+                            <!-- <span class="btn_reservation"><span class="txt_hairshop">카카오헤어샵 커밍순</span></span> --> <!-- 2016-06-17 삭제 -->
+                        </div>
+                    </div>
+                    <div class="hair_culture no_show">
+                        <div class="inner_commingsoon">
+                            <span class="img_hairshop"></span><!-- 2016-06-17 수정 -->
+                            <span class="txt_hairshop txt_noshow">No-show 걱정없는 헤어샵, 사전 결제로 고객의 No-Show 방지</span>
+
+                            <!-- 2019-07-01 수정 시작 -->
+                            <a href="http://www.hairzzang.com/kakaoshop_regOK/" class="btn_reservation btn_hair"><span class="txt_hairshop">헤어샵 상담신청</span></a>
+                            <a href="http://partners.kakaohairshop.co.kr/consulting-request" class="btn_reservation btn_nail"><span class="txt_hairshop">네일샵 상담신청</span></a>
+                            <!-- // 2019-07-01 수정 끝 -->
+                        </div>
+                    </div>
+                    <div class="intro_company">
+                        <div class="desc_company">
+                            <address class="info_company">대표이사 여민수, 조수용 주소 제주특별자치도 제주시 첨단로 242 (영평동)
+                                <small class="info_copyright">Copyright &copy;
+                                    <a href="#none" target="_blank" class="link_kakao">kakao Corp.</a> All rights reserved.
+                                </small>
+                            </address> <!-- 2016-04-05 수정 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="intro_kakaohairshop intro_type2" style="" >
+                    <h3 class="txt_hairshop tit_hairshop">머리 하기 참 힘든 세상</h3> <!-- 2016-06-17 추가 -->
+                    <!-- <span class="ico_quotation"></span> 2016-06-17 삭제 -->
+                    <!-- 2016-06-17 수정 및 on1~on2 클래스 삭제 시작 -->
+                    <!--  <div id="scene2" class="info_hairshop on1">
+                          <span class="deco_hair"></span>
+                          <div class="item_customer">
+                              <span class="txt_balloon txt_balloon1"></span>
+                              <span class="txt_balloon txt_balloon2"></span>
+                              <span class="txt_balloon txt_balloon3"></span>
+                              <span class="txt_balloon txt_balloon4"></span>
+                              <span class="txt_balloon txt_balloon5"></span>
+                          </div>
+                      </div> --><!-- 2016-06-17 수정 및 on1~on2 클래스 삭제 끝 -->
+                    <!-- <p class="txt_hairshop txt_reservation">이제는 바로 이 곳이야! 하는 헤어샵을 카카오헤어샵으로 찾고 예약해보세요.</p> -->
+                    <!-- <span class="ico_draw"></span> 2016-03-31 삭제 -->
+
+
+                    <!--<div id="scene2" class="info_hairshopx>-->
+                    <!--<span class="deco_hair deco_hair1"></span>-->
+                    <!--<span class="deco_hair deco_hair2"></span>-->
+                    <!--<span class="deco_hair deco_hair3"></span>-->
+                    <!--&lt;!&ndash; on클래스 반복 삭제 부탁드립니다. &ndash;&gt;-->
+                    <!--<div class="item_customer">-->
+                    <!--<p class="txt_hairshop txt_customer1">머리 잘한다는 헤어샵 겨우 찾아서 예약하려 했더니 10통째 통화만 대기중이에요</p>-->
+                    <!--<p class="txt_hairshop txt_customer2">어디에도 가격 정보는 없고, 전화로 물어보기는 민망하고, 생각지도 못한 결제 금액 때문에 울며 겨자먹기로 머리하곤 했어요</p>-->
+                    <!--<p class="txt_hairshop txt_customer3">‘신사동 미용실’이라고 검색했더니 전부 다 광고성 리뷰에 칭찬 일색뿐이더라구요 그거 믿고 갔다가 망한 적이 한 두번이 아니에요.</p>-->
+                    <!--<span class="paging_num">-->
+                    <!--<button type="button" class="num_page num_page1">1</button>-->
+                    <!--<span class="screen_out">현재페이지</span><button type="button" class="num_page num_page2">2</button>-->
+                    <!--<button type="button" class="num_page num_page3">3</button>-->
+                    <!--</span>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                </div>
+                <div class="intro_etc">
+                    <div class="paging_intro">
+                        <a href="#none" class="link_page on" onclick="setScene(1);"><span class="screen_out">현재페이지</span>1</a>
+                        <!-- 현재 페이지일 경우 on 클래스 추가 및 대체텍스트 추가 -->
+                        <a href="#none" class="link_page" onclick="setScene(2);">2</a>
+                        <a href="#none" class="link_page" onclick="setScene(3);">3</a>
+                        <a href="#none" class="link_page" onclick="setScene(4);">4</a>
+                        <a href="#none" class="link_page" onclick="setScene(5);">5</a>
+                        <a href="#none" class="link_page" onclick="setScene(6);">6</a>
+                        <!--<a href="#none" class="link_page" onclick="setScene(7);">7</a>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 2016-06-17 추가 시작 : 공유하기 레이어 -->
+        <div class="sns_layer ">
+            <div class="inner_sns_layer">
+                <div class="layer_head"><strong class="screen_out">공유하기</strong></div>
+                <div class="layer_body">
+                    <ul class="list_social">
+                        <!-- <li><a href="#none" class="link_sns"><span class="ico_hairshop ico_sns_kt"></span>카카오톡</a></li> 2016-06-28 삭제 -->
+                        <li><a href="#none" class="link_sns"><span class="ico_hairshop ico_sns_mp"></span>카카오스토리</a></li>
+                        <li><a href="#none" class="link_sns"><span class="ico_hairshop ico_sns_face"></span>페이스북</a></li>
+                        <li><a href="#none" class="link_sns"><span class="ico_hairshop ico_sns_twi"></span>트위터</a></li>
+                        <li><a href="#none" class="link_sns"><span class="ico_hairshop ico_sns_band"></span>밴드</a></li>
+                    </ul>
+                    <div class="info_url">
+                        <label for="copyUrl" class="screen_out">URL복사</label>
+                        <input id="copyUrl" type="text" class="inp_url #urlcopy" title="현재페이지 URL" value="http://www.kakao.com/kakaohairshop">
+                        <em class="desc_url">URL을 전체선택 한 후 복사하세요.</em>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- //2016-06-17 추가 끝 : 공유하기 레이어 -->
+        </body>
+        </html>
+    
+    
+
+
+
